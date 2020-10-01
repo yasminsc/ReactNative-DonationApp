@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "StartUpAssignment",
+    "slug": "StartUpAssignment",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/splash.png",
+    "splash": {
+      "image": "./app/assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "web": {
+      "favicon": "./app/assets/splash.png"
+    },
+    "android": {
+      "package": "com.lingonsaft.myapp",
+      "versionCode": 1,
+      "permissions": []
+    },
+    "description": ""
+  },
+  "expo-facebook": {
+    "facebookAutoInitEnabled": true
+  }
+}
