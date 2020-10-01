@@ -2,7 +2,7 @@ This is a React Native Project.
 
 Overview: A donation app.
 
-Technologies: Expo. Hooks.
+Technologies: Expo. Hooks. MobX. GraphQL API.
 
 Progress:
 Creating Ui - login Screen, Thank you Screen, DonateScreen, My Donations Screen
