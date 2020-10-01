@@ -6,6 +6,7 @@ import { ActivityIndicator } from "react-native-paper";
 import BottomTabNavigator from "./app/components/BottomTabNavigator";
 import { AuthContext } from "./app/components/Context";
 import { MainStackNavigator } from "./app/components/StackNavigation";
+import UserStore from "./app/store/UserStore";
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -20,16 +21,18 @@ export default function App() {
     signOut: () => {
       setIsLoading(false);
       setUserToken(null);
+      UserStore.token = null;
+      UserStore.donationAmount = "0";
       console.log("user token is" + userToken);
     },
-    signInFB: (token) => {
+    signInFB: (fbtoken, name) => {
       setIsLoading(false);
-      setUserToken(token);
-      console.log("user token is" + token);
+      setUserToken(fbtoken);
+      UserStore.connectedWithFB = true;
+      UserStore.token = fbtoken;
+      UserStore.name = name;
+      console.log("user token is" + fbtoken);
     },
-    // setToken: () => {
-    //   setUserToken(null);
-    // },
   }));
 
   useEffect(() => {

@@ -22,6 +22,7 @@ import * as Facebook from "expo-facebook";
 
 import { AuthContext } from "../components/Context";
 import Colors from "../config/Colors";
+import UserStore from "../store/UserStore";
 
 export default function LoginScreen(props) {
   const [value, onChangeText] = React.useState("");
@@ -42,7 +43,7 @@ export default function LoginScreen(props) {
       });
       if (type === "success") {
         // Get the user's name using Facebook's Graph API
-        signInFB({ token });
+        signInFB({ token, name });
         const response = await fetch(
           `https://graph.facebook.com/me?access_token=${token}&fields=id,name,first_name,last_name,email`
         );
@@ -71,9 +72,8 @@ export default function LoginScreen(props) {
 
   function signin() {
     if (email != "" && password != "") {
-      // let re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
-      // email.test(re)
-      //   ?
+      UserStore.username = email;
+      UserStore.token = "fgk";
       props.navigation.navigate("DonateScreen");
       // : Alert.alert("User name or password are not valid");
       signIn();

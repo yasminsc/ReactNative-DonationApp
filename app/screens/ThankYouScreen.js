@@ -9,8 +9,9 @@ import {
   StyleSheet,
   Linking,
 } from "react-native";
-
+import { observer } from "mobx-react";
 import Colors from "../config/Colors";
+import UserStore from "../store/UserStore";
 
 const url =
   "https://support.savethechildren.org/site/SPageNavigator/sponsorship.html#!/";
@@ -21,7 +22,7 @@ export default function ThankYouScreen(props) {
       <Text></Text>
       <Image source={require("../assets/hearts.png")}></Image>
       <Text style={styles.headerText}>Thank You</Text>
-      <Text style={styles.textSecondary}>for 100$</Text>
+      <Text style={styles.textSecondary}>for {UserStore.donationAmount} $</Text>
       <Image source={require("../assets/child.jpg")} style={styles.img}></Image>
       <Text style={styles.textSecondary}>Your donation come to irena</Text>
       <Text>The Charity Children's fund</Text>

@@ -11,35 +11,36 @@ import {
 } from "react-native";
 
 import Colors from "../config/Colors";
+import UserStore from "../store/UserStore";
+import { observer } from "mobx-react";
 
 export default function DonateAgain(props) {
   const [count, setCount] = useState(0);
-  // const value = useState(new Animated.valueXY({ x: 0, y: 0 }))[0];
-
-  // function spin() {
-  //   Animated.timing(
-  //     value,
-  //     {
-  //       toValue: { X: 100, Y: 100 },
-  //       duration: 1000,
-  //       useNativeDriver: false,
-  //     }.start
-  //   );
-  // }
 
   //Methods
   function reduceSum() {
     if (count > 49) {
       setCount(count - 50);
+      UserStore.donationAmount = count - 50;
+      console.log(UserStore.donationAmount);
     } else {
       setCount(count);
+      UserStore.donationAmount = count;
     }
+  }
+
+  function addSum() {
+    setCount(count + 50);
+    UserStore.donationAmount = count + 50;
+    console.log(UserStore.donationAmount);
   }
 
   function createRandom() {
     let random = Math.random();
     random = Math.floor(random * 1000);
     setCount(random);
+    UserStore.donationAmount = random;
+    console.log(UserStore.donationAmount);
   }
 
   return (
@@ -52,10 +53,7 @@ export default function DonateAgain(props) {
         <Text style={styles.buttonRoundText}>Press Me</Text>
       </Pressable>
       <View style={styles.row}>
-        <Pressable
-          onPress={() => setCount(count + 50)}
-          style={styles.buttonAmount}
-        >
+        <Pressable onPress={() => addSum()} style={styles.buttonAmount}>
           <Text>+</Text>
         </Pressable>
         <Pressable onPress={reduceSum} style={styles.buttonAmount}>

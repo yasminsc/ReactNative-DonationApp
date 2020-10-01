@@ -13,16 +13,45 @@ import {
   Share,
 } from "react-native";
 import { Picker } from "@react-native-community/picker";
+import { observer } from "mobx-react";
 
 import DonateAgain from "./DonateAgain";
 import ButtonLogOut from "../components/ButtonLogOut";
 import Colors from "../config/Colors";
+import UserStore from "../store/UserStore";
 
 export default function DonateScreen(props) {
   const [value, onChangeText] = React.useState(" ");
   const [selectedValue, setSelectedValue] = useState("Fund");
+  let buttonMsg = "donate " + UserStore.donationAmount + "$ now";
+  const [count, setCount] = useState(0);
 
   //Methods
+  function reduceSum() {
+    if (count > 49) {
+      setCount(count - 50);
+      UserStore.donationAmount = count - 50;
+      console.log(UserStore.donationAmount);
+    } else {
+      setCount(count);
+      UserStore.donationAmount = count;
+    }
+  }
+
+  function addSum() {
+    setCount(count + 50);
+    UserStore.donationAmount = count + 50;
+    console.log(UserStore.donationAmount);
+  }
+
+  function createRandom() {
+    let random = Math.random();
+    random = Math.floor(random * 1000);
+    setCount(random);
+    UserStore.donationAmount = random;
+    console.log(UserStore.donationAmount);
+  }
+
   function ButtonPressed() {
     return Alert.alert(
       "Confirmation",
@@ -30,7 +59,10 @@ export default function DonateScreen(props) {
       [
         {
           text: "confirm",
-          onPress: () => props.navigation.navigate("ThankYou"),
+          onPress: () =>
+            props.navigation.navigate("ThankYou", {
+              amount: count.toString,
+            }),
         },
         {
           text: "Cancel",
@@ -113,12 +145,29 @@ export default function DonateScreen(props) {
 
       <View style={styles.middle}>
         <StatusBar style="auto" backgroundColor={Colors.statusBarColor} />
-        <DonateAgain />
+        {/* <DonateAgain /> */}
+        <View style={styles.containerPressMe}>
+          <Text></Text>
+          <Text style={{ fontWeight: "bold", fontSize: 30 }}>{count} $</Text>
+          {/* <Animated.View> */}
+          {/* </Animated.View> */}
+          <Pressable onPress={() => createRandom()} style={styles.buttonRound}>
+            <Text style={styles.buttonRoundText}>Press Me</Text>
+          </Pressable>
+          <View style={styles.rowButtons}>
+            <Pressable onPress={() => addSum()} style={styles.buttonAmount}>
+              <Text>+</Text>
+            </Pressable>
+            <Pressable onPress={reduceSum} style={styles.buttonAmount}>
+              <Text>-</Text>
+            </Pressable>
+          </View>
+        </View>
       </View>
       <View style={styles.blank}></View>
       <View style={styles.footter}>
         <Button
-          title="Donate 200$ now"
+          title={buttonMsg}
           color={Colors.buttonColor}
           onPress={() => ButtonPressed()}
         />
@@ -132,7 +181,7 @@ export default function DonateScreen(props) {
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "space-between",
   },
   container: {
@@ -141,7 +190,7 @@ const styles = StyleSheet.create({
   },
   logout: {
     flex: 0.5,
-    alignItems: "flex-end",
+    alignItems: "flex-start",
     paddingTop: 20,
     backgroundColor: Colors.backgroundColor,
   },
@@ -170,7 +219,7 @@ const styles = StyleSheet.create({
   buttonLogOut: {
     position: "absolute",
     paddingTop: 20,
-    paddingLeft: 280,
+    paddingRight: 280,
   },
   pickerBox: { height: 20, width: 150 },
   pickerTitle: {
@@ -182,5 +231,40 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "grey",
     borderRadius: 5,
+  },
+  containerPressMe: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 10,
+  },
+  rowButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  buttonAmount: {
+    width: 30,
+    height: 30,
+    backgroundColor: "grey",
+    borderRadius: 10,
+    alignItems: "center",
+    padding: 5,
+    overflow: "hidden",
+    marginLeft: 10,
+  },
+  buttonRoundText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: Colors.white,
+    textAlign: "center",
+  },
+  buttonRound: {
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 100,
+    height: 100,
+    backgroundColor: Colors.buttonColor,
+    borderRadius: 50,
   },
 });
